@@ -1,0 +1,36 @@
+Task1;
+
+SELECT 
+   Market
+ FROM 
+     dim_customer
+ WHERE 
+    customer = "Atliq Exclusive“    and 
+    region = "APAC";
+
+Task2;
+
+with cte1 as (
+SELECT
+	COUNT(DISTINCT product_code) as unique_product_count_2020
+FROM 
+  fact_sales_monthly 
+WHERE 
+  fiscal_year=2020
+),
+
+cte2 as (
+SELECT
+	COUNT(DISTINCT product_code) as unique_product_count_2021
+FROM 
+  fact_sales_monthly 
+WHERE 
+  fiscal_year=2021
+)
+    
+SELECT 
+    *,
+    round((unique_product_count_2021-unique_product_count_2020)/unique_product_count_2020*100,2) as pct_change
+FROM cte1
+JOIN cte2;
+
